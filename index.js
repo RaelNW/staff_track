@@ -20,30 +20,6 @@ connection.connect((err) => {
   promptUser();
 });
 
-//Display database in relation to users choices
-function displayData(choice) {
-  let query;
-  switch (choice) {
-    case "Departments":
-      query = "SELECT * FROM department";
-      break;
-    case "Roles":
-      query = "SELECT * FROM role";
-      break;
-    case "Employees":
-      query = "SELECT * FROM employee";
-      break;
-    default:
-      break;
-  }
-  if (query) {
-    connection.query(query, (err, results) => {
-      if (err) throw err;
-      console.table(results);
-      promptUser(); // Return to the main menu
-    });
-  }
-}
 //Prompt users on what they would like to do with the database
 function promptUser() {
   inquirer
@@ -65,41 +41,50 @@ function promptUser() {
     ])
 
     .then((answers) => {
-      if (answers.action === "Quit") {
-        // if user selects quit end prompts
-        connection.end();
-        console.log("See you next time");
-        return;
+      console.log("You entered: " + answers.action);
+      switch (answers.action) {
+        case "Add Department":
+          addDepartment();
+          break;
+        case "Add Role":
+          addRole();
+          break;
+        case "Add Employee":
+          addEmployee();
+          break;
+        case "View Department":
+          viewDepartment();
+          break;
+        case "View Role":
+          viewRole();
+          break;
+        case "View Employee":
+          viewEmployee();
+          break;
+        case "Quit":
+          connection.end();
+          console.log("See you next time");
+          break;
       }
-      displayData(answers.action);
     });
 }
 
 //Function to add dept when user wants to
+
 function addDepartment() {
   inquirer
-    .prompt([
-      {
-        type: "input",
-        name: "name",
-        message: "Enter Department name",
-      },
-    ])
-    .then((answer) => {
-      connection.query(
-        `INSERT INTO department(name)
-                    VALUES(?)`,
-        answer.addDepartment,
-        (err, results) => {
-          if (err) {
-            console.log(err);
-          } else {
-            connection.query(`SELECT * FROM department`, (err, results) => {
-              err ? console.error(err) : console.table(results);
-              init();
-            });
-          }
-        }
-      );
+    .prompt({
+      type: "input",
+      message: "Enter Department name",
+      name: "department",
+    })
+    .then((response) => {
+      const department = response.department;
+      const query = `INSERT INTO department (name) VALUES("${department}")`;
+      connection.query(query, function (err, response) {
+        if (err) throw err;
+        console.table(response);
+        promptUser(); // Return to the main menu
+      });
     });
 }
