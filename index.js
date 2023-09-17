@@ -88,3 +88,81 @@ function addDepartment() {
       });
     });
 }
+
+//Function to add role when user wants to
+
+function addRole() {
+  inquirer
+    .prompt(
+      {
+        type: "input",
+        message: "What is the title for this role",
+        name: "title",
+      },
+      {
+        type: "input",
+        message: "What is the salary for this role?",
+        name: "salary",
+      },
+
+      {
+        type: "input",
+        message: "What is the department ID for this role",
+        name: "departmentId",
+      }
+    )
+    .then((response) => {
+      const title = response.title;
+      const salary = response.salary;
+      const departmentId = response.departmentId;
+      const query = `INSERT INTO role (title,salary,department_id) VALUES("${title}","${salary}","${departmentId}")`;
+      connection.query(query, function (err, response) {
+        if (err) throw err;
+        console.table(response);
+        promptUser(); // Return to the main menu
+      });
+    });
+}
+
+//Function to add employee when user wants to
+
+function addEmployee() {
+  inquirer
+    .prompt(
+      {
+        type: "input",
+        message: "What is the first name of the employee?",
+        name: "firstName",
+      },
+
+      {
+        type: "input",
+        message: "What is the last name of the employee?",
+        name: "lastName",
+      },
+
+      {
+        type: "input",
+        message: "What is the role_id of the employee?",
+        name: "roleId",
+      },
+
+      {
+        type: "input",
+        message: "What is the manager_id of the employee?",
+        name: "managerId",
+      }
+    )
+    .then((response) => {
+      const firstName = response.firstName;
+      const lastName = response.lastName;
+      const roleId = response.roleId;
+      const managerId = response.managerId;
+      const query = `INSERT INTO role (first_name, last_name, role_id, manager_id) VALUES("${firstName}","${lastName}","${roleId}" ,"${managerId}")`;
+      connection.query(query, function (err, response) {
+        if (err) throw err;
+        console.table(response);
+        promptUser(); // Return to the main menu
+      });
+    });
+}
