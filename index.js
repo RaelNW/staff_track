@@ -166,3 +166,33 @@ function addEmployee() {
       });
     });
 }
+
+//Function to View Department when user wants to
+function viewDepartment() {
+  const query = "SELECT * FROM department";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    promptUser();
+  });
+}
+
+//Function to View role when user wants to
+function viewRole() {
+  const query = "SELECT * FROM role";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    promptUser();
+  });
+}
+
+//Function to View Employee when user wants to
+function viewEmployee() {
+  const query = "SELECT * FROM employee";
+  connection.query(query, function (err, res) {
+    if (err) throw err;
+    console.table(res);
+    promptUser();
+  });
+}
