@@ -25,8 +25,6 @@ WHEN I choose to add a role
 THEN I am prompted to enter the name, salary, and department for the role and that role is added to the database
 WHEN I choose to add an employee
 THEN I am prompted to enter the employee’s first name, last name, role, and manager, and that employee is added to the database
-WHEN I choose to update an employee role
-THEN I am prompted to select an employee to update and their new role and this information is updated in the database
 
 ## Usage
 
@@ -38,22 +36,32 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 - Node.js
 - Inquirer
+- mysql2
+- console.table
 
 ## Installation
 
 1. Make sure you have Node.js installed on your machine.
 2. Clone this repository:
 
-   git clone
+   git clone https://github.com/RaelNW/staff_track.git
 
 3. Navigate to the project directory:
    cd staff_track
 4. Install the required dependencies:
 
 - Inquirer
+- mysql2
+- console.table
+
+## link to repo
+
+https://github.com/RaelNW/staff_track
+
+## link to Demo
+
+https://drive.google.com/file/d/11zWtHw6YiarXKr357RqT9MJP_lGdyIJi/view?usp=drive_link
 
 ## Credits
 
 Staff Track created by [Rael Wanjala].
-
-## link to Demo

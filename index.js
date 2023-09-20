@@ -1,5 +1,6 @@
 const inquirer = require("inquirer");
 const mysql = require("mysql2");
+const consoleTable = require("console.table");
 
 //Create connection to Database
 const connection = mysql.createConnection({
@@ -52,13 +53,13 @@ function promptUser() {
         case "Add Employee":
           addEmployee();
           break;
-        case "View Department":
+        case "View All Departments":
           viewDepartment();
           break;
-        case "View Role":
+        case "View All Roles":
           viewRole();
           break;
-        case "View Employee":
+        case "View All Employees":
           viewEmployee();
           break;
         case "Quit":
@@ -93,7 +94,7 @@ function addDepartment() {
 
 function addRole() {
   inquirer
-    .prompt(
+    .prompt([
       {
         type: "input",
         message: "What is the title for this role",
@@ -104,18 +105,12 @@ function addRole() {
         message: "What is the salary for this role?",
         name: "salary",
       },
-
-      {
-        type: "input",
-        message: "What is the department ID for this role",
-        name: "departmentId",
-      }
-    )
+    ])
     .then((response) => {
       const title = response.title;
       const salary = response.salary;
       const departmentId = response.departmentId;
-      const query = `INSERT INTO role (title,salary,department_id) VALUES("${title}","${salary}","${departmentId}")`;
+      const query = `INSERT INTO role (title,salary) VALUES('${title}','${salary}')`;
       connection.query(query, function (err, response) {
         if (err) throw err;
         console.table(response);
@@ -128,40 +123,37 @@ function addRole() {
 
 function addEmployee() {
   inquirer
-    .prompt(
+    .prompt([
       {
         type: "input",
         message: "What is the first name of the employee?",
-        name: "firstName",
+        name: "first_name",
       },
-
       {
         type: "input",
         message: "What is the last name of the employee?",
-        name: "lastName",
+        name: "last_name",
       },
-
       {
         type: "input",
         message: "What is the role_id of the employee?",
-        name: "roleId",
+        name: "role_id",
       },
-
       {
         type: "input",
         message: "What is the manager_id of the employee?",
-        name: "managerId",
-      }
-    )
+        name: "manager_id",
+      },
+    ])
     .then((response) => {
-      const firstName = response.firstName;
-      const lastName = response.lastName;
-      const roleId = response.roleId;
-      const managerId = response.managerId;
-      const query = `INSERT INTO role (first_name, last_name, role_id, manager_id) VALUES("${firstName}","${lastName}","${roleId}" ,"${managerId}")`;
-      connection.query(query, function (err, response) {
+      const firstName = response.first_name;
+      const lastName = response.last_name;
+      const roleId = response.role_id;
+      const managerId = response.manager_id;
+      const query = `INSERT INTO employee (first_name, last_name, role_id, manager_id) VALUES ('${firstName}', '${lastName}', ${roleId}, ${managerId})`;
+      connection.query(query, function (err, result) {
         if (err) throw err;
-        console.table(response);
+        console.log("Employee added successfully!");
         promptUser(); // Return to the main menu
       });
     });
@@ -179,7 +171,7 @@ function viewDepartment() {
 
 //Function to View role when user wants to
 function viewRole() {
-  const query = "SELECT * FROM role";
+  const query = "SELECT role.id, role.title, role.salary  FROM role ";
   connection.query(query, function (err, res) {
     if (err) throw err;
     console.table(res);
